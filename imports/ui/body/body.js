@@ -19,6 +19,7 @@ Template.body.events({
     Posts.insert({
       text: currentText,
       createdAt: new Date(),
+      votes: 0,
     });
   },
 });

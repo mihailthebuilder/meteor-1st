@@ -1,5 +1,10 @@
 .post-wrapper {
   margin-top: 4rem;
   border: 1px solid black;
-  padding: 2rem;
+  padding: 1rem 2rem 2rem 2rem;
+
+  button {
+    width: 5rem;
+    margin-right: 2rem;
+  }
 }
