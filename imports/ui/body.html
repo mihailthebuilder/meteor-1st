@@ -1,3 +1,9 @@
 <body>
-  <div>Hello world</div>
+  <h1>A crappy blog</h1>
+
+  <ul>
+    {{#each posts}}
+      {{> post}}
+    {{/each}}
+  </ul>
 </body>
