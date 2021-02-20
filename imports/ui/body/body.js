@@ -1,6 +1,6 @@
 import { Template } from "meteor/templating";
-import { Posts } from "../api/posts.js";
-import "./post.js";
+import { Posts } from "../../api/posts.js";
+import "../post/post.js";
 import "./body.html";
 
 Template.body.helpers({
