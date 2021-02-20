@@ -19,3 +19,20 @@ body {
   list-style-type: none;
   padding: 0;
 }
+
+.new-post {
+  button,
+  textarea {
+    display: block;
+  }
+
+  textarea {
+    padding: 1rem;
+    width: 100%;
+  }
+
+  button {
+    margin-top: 2rem;
+    padding: 1rem 3rem;
+  }
+}
