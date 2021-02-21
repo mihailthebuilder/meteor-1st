@@ -40,7 +40,6 @@ Meteor.methods({
     }
 
     previousVoteValue = Posts.findOne({ _id: postId }).votes;
-    // check that post is not from user, then update body. also hide vote buttons for post
 
     Posts.update(postId, {
       $set: {

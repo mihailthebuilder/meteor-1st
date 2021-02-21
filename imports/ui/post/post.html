@@ -5,8 +5,10 @@
     <p><i>{{votes}} votes</i></p>
 
     {{#if currentUser}}
-      <button class="vote" voteValue="1">upvote</button>
-      <button class="vote" voteValue="-1">downvote</button>
+      {{#if notUserPost}}
+        <button class="vote" voteValue="1">upvote</button>
+        <button class="vote" voteValue="-1">downvote</button>
+      {{/if}}
     {{/if}}
   </li>
 </template>

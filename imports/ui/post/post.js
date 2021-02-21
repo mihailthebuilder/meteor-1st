@@ -6,8 +6,8 @@ import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 
 Template.post.helpers({
-  userPost() {
-    return this.owner === this.userId;
+  notUserPost() {
+    return this.owner !== Meteor.user()._id;
   },
 });
 
