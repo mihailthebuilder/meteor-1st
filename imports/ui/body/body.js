@@ -6,6 +6,10 @@ import "../post/post.js";
 import "./body.html";
 import "./body.scss";
 
+Template.body.onCreated(function bodyOnCreated() {
+  Meteor.subscribe("posts");
+});
+
 Template.body.helpers({
   posts() {
     return Posts.find({}, { sort: { createdAt: -1 } });
