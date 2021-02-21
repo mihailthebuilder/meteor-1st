@@ -21,5 +21,7 @@ Template.body.events({
       createdAt: new Date(),
       votes: 0,
     });
+
+    event.target.textarea_post.value = "";
   },
 });
