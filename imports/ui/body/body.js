@@ -8,10 +8,6 @@ Template.body.helpers({
   posts() {
     return Posts.find({}, { sort: { createdAt: -1 } });
   },
-  isUser() {
-    console.log(Meteor.userId());
-    return Meteor.userId();
-  },
 });
 
 Template.body.events({
