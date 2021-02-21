@@ -20,6 +20,5 @@ typescript@4.1.2              # Enable TypeScript syntax in .ts and .tsx modules
 shell-server@0.5.0            # Server-side component of the `meteor shell` command
 
 fourseven:scss
-autopublish
 accounts-ui
 accounts-password
