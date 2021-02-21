@@ -1,5 +1,7 @@
 import { Template } from "meteor/templating";
 import { Posts } from "../../api/posts.js";
+import { Meteor } from "meteor/meteor";
+
 import "../post/post.js";
 import "./body.html";
 import "./body.scss";
@@ -16,13 +18,7 @@ Template.body.events({
 
     const currentText = event.target.textarea_post.value;
 
-    Posts.insert({
-      text: currentText,
-      createdAt: new Date(),
-      votes: 0,
-      owner: this.userId,
-      username: Posts.users.findOne(this.userId).username,
-    });
+    Meteor.call("posts.insert", currentText);
 
     event.target.textarea_post.value = "";
   },
