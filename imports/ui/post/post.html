@@ -3,7 +3,9 @@
     <p>{{text}}</p>
     <p><i>{{votes}} votes</i></p>
 
-    <button class="vote" voteValue="1">upvote</button>
-    <button class="vote" voteValue="-1">downvote</button>
+    {{#if currentUser}}
+      <button class="vote" voteValue="1">upvote</button>
+      <button class="vote" voteValue="-1">downvote</button>
+    {{/if}}
   </li>
 </template>

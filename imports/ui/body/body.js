@@ -20,6 +20,8 @@ Template.body.events({
       text: currentText,
       createdAt: new Date(),
       votes: 0,
+      owner: this.userId,
+      username: Posts.users.findOne(this.userId).username,
     });
 
     event.target.textarea_post.value = "";
