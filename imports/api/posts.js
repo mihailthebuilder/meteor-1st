@@ -29,8 +29,7 @@ Meteor.methods({
       createdAt: new Date(),
       owner: this.userId,
       username: Meteor.users.findOne(this.userId).username,
-      votes: 0,
-      usersVoted: [],
+      votes: [],
     });
   },
   "posts.vote"(postId, voteValue) {
@@ -46,14 +45,33 @@ Meteor.methods({
     post = Posts.findOne({ _id: postId });
 
     // don't allow votes on own posts
-    if (post.owner === userId || post.usersVoted.includes(userId)) {
+    if (post.owner === userId) {
       throw new Meteor.Error("not-authorized");
+    }
+
+    console.log(post.usersVoted);
+
+    let newUsersVoted = post.usersVoted.concat({
+      userId: userId,
+      voteValue: voteValue,
+    });
+
+    const userPreviousVoteIndex = post.usersVoted.findIndex(
+      (user) => user.userId === userId
+    );
+
+    if (userPreviousVoteIndex !== -1) {
+      if (post.usersVoted[userPreviousVoteIndex].voteValue === voteValue) {
+        throw new Meteor.Error("not-authorized");
+      }
+      post.usersVoted[userPreviousVoteIndex].voteValue = voteValue;
+      newUsersVoted = post.usersVoted;
     }
 
     Posts.update(postId, {
       $set: {
         votes: post.votes + voteValue,
-        usersVoted: post.usersVoted.concat(userId),
+        usersVoted: newUsersVoted,
       },
     });
   },
