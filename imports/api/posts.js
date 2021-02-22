@@ -49,29 +49,26 @@ Meteor.methods({
       throw new Meteor.Error("not-authorized");
     }
 
-    console.log(post.usersVoted);
-
-    let newUsersVoted = post.usersVoted.concat({
+    let newVotes = post.votes.concat({
       userId: userId,
       voteValue: voteValue,
     });
 
-    const userPreviousVoteIndex = post.usersVoted.findIndex(
+    const userPreviousVoteIndex = post.votes.findIndex(
       (user) => user.userId === userId
     );
 
     if (userPreviousVoteIndex !== -1) {
-      if (post.usersVoted[userPreviousVoteIndex].voteValue === voteValue) {
+      if (post.votes[userPreviousVoteIndex].voteValue === voteValue) {
         throw new Meteor.Error("not-authorized");
       }
-      post.usersVoted[userPreviousVoteIndex].voteValue = voteValue;
-      newUsersVoted = post.usersVoted;
+      post.votes[userPreviousVoteIndex].voteValue = voteValue;
+      newVotes = post.votes;
     }
 
     Posts.update(postId, {
       $set: {
-        votes: post.votes + voteValue,
-        usersVoted: newUsersVoted,
+        votes: newVotes,
       },
     });
   },

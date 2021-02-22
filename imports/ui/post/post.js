@@ -10,6 +10,7 @@ Template.post.helpers({
     return this.owner !== Meteor.user()._id;
   },
   calculateVotes() {
+    console.log(this.votes);
     return this.votes.reduce((sum, user) => sum + user.voteValue, 0);
   },
 });
