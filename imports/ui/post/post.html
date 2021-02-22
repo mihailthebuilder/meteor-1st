@@ -11,6 +11,13 @@
           <button class="vote" voteValue="-1">downvote</button>
         </div>
       {{/if}}
+    {{/if}}
+
+    {{#each comments}}
+      {{> comment}}
+    {{/each}}    
+
+    {{#if currentUser}}
       <form class="new-content comment-content" content="comment">
         <textarea name="textarea_content" placeholder="Type your sorry-ass comment here"></textarea>
         <button type="submit">Add comment</button>

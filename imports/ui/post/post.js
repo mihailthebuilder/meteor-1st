@@ -1,5 +1,6 @@
 import "./post.html";
 import "./post.scss";
+import "../comment/comment.js";
 import { Meteor } from "meteor/meteor";
 import { Comments } from "../../api/content.js";
 import { Template } from "meteor/templating";
@@ -12,9 +13,7 @@ Template.post.helpers({
   comments() {
     return Comments.find({ post: this._id }, { sort: { createdAt: -1 } });
   },
-});
 
-Template.post.helpers({
   notUserPost() {
     return this.owner !== Meteor.user()._id;
   },

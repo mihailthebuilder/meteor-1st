@@ -1,0 +1,16 @@
+<template name="comment">
+  <li class="comment-wrapper">
+    <i>by {{username}}</i>
+    <p>{{text}}</p>
+    <p><i>{{calculateVotes}} votes</i></p>
+
+    {{#if currentUser}}
+      {{#if notUserPost}}
+        <div>
+          <button class="vote" voteValue="1">upvote</button>
+          <button class="vote" voteValue="-1">downvote</button>
+        </div>
+      {{/if}}
+    {{/if}}
+  </li>
+</template>
