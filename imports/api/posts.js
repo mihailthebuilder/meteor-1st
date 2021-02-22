@@ -30,26 +30,30 @@ Meteor.methods({
       owner: this.userId,
       username: Meteor.users.findOne(this.userId).username,
       votes: 0,
+      usersVoted: [],
     });
   },
   "posts.vote"(postId, voteValue) {
     check(voteValue, VoteOptions);
 
+    userId = this.userId;
+
     // don't allow people who haven't logged in
-    if (!this.userId) {
+    if (!userId) {
       throw new Meteor.Error("not-authorized");
     }
+
+    post = Posts.findOne({ _id: postId });
 
     // don't allow votes on own posts
-    if (Posts.find({ _id: postId, owner: this.userId }).count() > 0) {
+    if (post.owner === userId || post.usersVoted.includes(userId)) {
       throw new Meteor.Error("not-authorized");
     }
-
-    previousVoteValue = Posts.findOne({ _id: postId }).votes;
 
     Posts.update(postId, {
       $set: {
-        votes: previousVoteValue + voteValue,
+        votes: post.votes + voteValue,
+        usersVoted: post.usersVoted.concat(userId),
       },
     });
   },
