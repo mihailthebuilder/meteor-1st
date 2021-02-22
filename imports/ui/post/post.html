@@ -6,9 +6,15 @@
 
     {{#if currentUser}}
       {{#if notUserPost}}
-        <button class="vote" voteValue="1">upvote</button>
-        <button class="vote" voteValue="-1">downvote</button>
+        <div>
+          <button class="vote" voteValue="1">upvote</button>
+          <button class="vote" voteValue="-1">downvote</button>
+        </div>
       {{/if}}
+      <form class="new-content comment-content" content="comment">
+        <textarea name="textarea_content" placeholder="Type your sorry-ass comment here"></textarea>
+        <button type="submit">Add comment</button>
+      </form>
     {{/if}}
   </li>
 </template>

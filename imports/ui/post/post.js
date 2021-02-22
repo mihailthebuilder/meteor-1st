@@ -1,8 +1,18 @@
 import "./post.html";
 import "./post.scss";
 import { Meteor } from "meteor/meteor";
-
+import { Comments } from "../../api/content.js";
 import { Template } from "meteor/templating";
+
+Template.post.onCreated(function commentOnCreated() {
+  Meteor.subscribe("comments");
+});
+
+Template.post.helpers({
+  comments() {
+    return Comments.find({ post: this._id }, { sort: { createdAt: -1 } });
+  },
+});
 
 Template.post.helpers({
   notUserPost() {
@@ -18,21 +28,26 @@ Template.post.events({
     event.preventDefault();
 
     const voteValue = parseInt(event.target.getAttribute("voteValue"));
+    const contentType = this.hasOwnProperty("postId") ? "comment" : "post";
 
     const userPreviousVoteIndex = this.votes.findIndex(
       (user) => user.userId === Meteor.user()._id
     );
 
-    if (userPreviousVoteIndex !== -1) {
-      previousVoteValue = this.votes[userPreviousVoteIndex].voteValue;
-      if (previousVoteValue === voteValue) {
-        const voteType = previousVoteValue === 1 ? "upvoted" : "downvoted";
-        alert(`You already ${voteType} this post.`);
-      } else {
-        Meteor.call("posts.vote", this._id, voteValue);
-      }
+    previousVoteValue =
+      userPreviousVoteIndex !== -1
+        ? this.votes[userPreviousVoteIndex].voteValue
+        : null;
+
+    if (previousVoteValue !== null && previousVoteValue === voteValue) {
+      const voteType = previousVoteValue === 1 ? "upvoted" : "downvoted";
+      alert(
+        `You already ${voteType} this ${
+          contentType === "comment" ? "comment" : "post"
+        }.`
+      );
     } else {
-      Meteor.call("posts.vote", this._id, voteValue);
+      Meteor.call("content.vote", contentType, this._id, voteValue);
     }
   },
 });

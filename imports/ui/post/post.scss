@@ -8,3 +8,23 @@
     margin-right: 2rem;
   }
 }
+
+.comment-content {
+  margin-top: 2rem;
+
+  textarea,
+  button {
+    display: block;
+  }
+
+  textarea {
+    width: 100%;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+  }
+
+  button {
+    width: 7rem;
+    height: 2rem;
+  }
+}

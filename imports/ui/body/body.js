@@ -1,5 +1,5 @@
 import { Template } from "meteor/templating";
-import { Posts } from "../../api/posts.js";
+import { Posts } from "../../api/content.js";
 import { Meteor } from "meteor/meteor";
 
 import "../post/post.js";
@@ -20,7 +20,7 @@ Template.body.events({
   "submit .new-content"(event) {
     event.preventDefault();
 
-    const currentText = event.target.textarea_post.value;
+    const currentText = event.target.textarea_content.value;
     const contentType = event.target.content;
 
     contentRelId = contentType === "comment" ? true : null;

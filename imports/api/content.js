@@ -45,7 +45,7 @@ Meteor.methods({
 
     Dataset.insert(contentObj);
   },
-  "content.vote"({ contentType, contentId, voteValue }) {
+  "content.vote"(contentType, contentId, voteValue) {
     check(voteValue, VoteOptions);
 
     userId = this.userId;
@@ -81,7 +81,7 @@ Meteor.methods({
       newVotes = content.votes;
     }
 
-    Dataset.update(postId, {
+    Dataset.update(contentId, {
       $set: {
         votes: newVotes,
       },
