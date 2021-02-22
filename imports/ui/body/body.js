@@ -17,12 +17,15 @@ Template.body.helpers({
 });
 
 Template.body.events({
-  "submit .new-post"(event) {
+  "submit .new-content"(event) {
     event.preventDefault();
 
     const currentText = event.target.textarea_post.value;
+    const contentType = event.target.content;
 
-    Meteor.call("posts.insert", currentText);
+    contentRelId = contentType === "comment" ? true : null;
+
+    Meteor.call("content.insert", currentText, contentType, contentRelId);
 
     event.target.textarea_post.value = "";
   },

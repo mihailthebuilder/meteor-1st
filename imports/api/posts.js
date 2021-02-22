@@ -21,22 +21,31 @@ const VoteOptions = Match.Where((value) => {
 });
 
 Meteor.methods({
-  "posts.insert"(text) {
+  "content.insert"(text, contentType, postId) {
     check(text, String);
 
     if (!this.userId) {
       throw new Meteor.Error("not-authorized");
     }
 
-    Posts.insert({
+    contentObj = {
       text,
       createdAt: new Date(),
       owner: this.userId,
       username: Meteor.users.findOne(this.userId).username,
       votes: [],
-    });
+    };
+
+    Dataset = Posts;
+
+    if (contentType === "comment") {
+      contentObj.post = postId;
+      Dataset = Comments;
+    }
+
+    Dataset.insert(contentObj);
   },
-  "posts.vote"(postId, voteValue) {
+  "content.vote"({ contentType, contentId, voteValue }) {
     check(voteValue, VoteOptions);
 
     userId = this.userId;
@@ -46,87 +55,33 @@ Meteor.methods({
       throw new Meteor.Error("not-authorized");
     }
 
-    post = Posts.findOne({ _id: postId });
+    Dataset = contentType === "comment" ? Comments : Posts;
+
+    content = Dataset.findOne({ _id: contentId });
 
     // don't allow votes on own posts
-    if (post.owner === userId) {
+    if (content.owner === userId) {
       throw new Meteor.Error("not-authorized");
     }
 
-    let newVotes = post.votes.concat({
+    let newVotes = content.votes.concat({
       userId: userId,
       voteValue: voteValue,
     });
 
-    const userPreviousVoteIndex = post.votes.findIndex(
+    const userPreviousVoteIndex = content.votes.findIndex(
       (user) => user.userId === userId
     );
 
     if (userPreviousVoteIndex !== -1) {
-      if (post.votes[userPreviousVoteIndex].voteValue === voteValue) {
+      if (content.votes[userPreviousVoteIndex].voteValue === voteValue) {
         throw new Meteor.Error("not-authorized");
       }
-      post.votes[userPreviousVoteIndex].voteValue = voteValue;
-      newVotes = post.votes;
+      content.votes[userPreviousVoteIndex].voteValue = voteValue;
+      newVotes = content.votes;
     }
 
-    Posts.update(postId, {
-      $set: {
-        votes: newVotes,
-      },
-    });
-  },
-  "comments.insert"(text, postId) {
-    check(text, String);
-
-    if (!this.userId) {
-      throw new Meteor.Error("not-authorized");
-    }
-
-    Posts.insert({
-      text,
-      createdAt: new Date(),
-      owner: this.userId,
-      username: Meteor.users.findOne(this.userId).username,
-      post: postId,
-      votes: [],
-    });
-  },
-  "comments.vote"(commentId, voteValue) {
-    check(voteValue, VoteOptions);
-
-    userId = this.userId;
-
-    // don't allow people who haven't logged in
-    if (!userId) {
-      throw new Meteor.Error("not-authorized");
-    }
-
-    comment = Comments.findOne({ _id: commentId });
-
-    // don't allow votes on own posts
-    if (comment.owner === userId) {
-      throw new Meteor.Error("not-authorized");
-    }
-
-    let newVotes = comment.votes.concat({
-      userId: userId,
-      voteValue: voteValue,
-    });
-
-    const userPreviousVoteIndex = comment.votes.findIndex(
-      (user) => user.userId === userId
-    );
-
-    if (userPreviousVoteIndex !== -1) {
-      if (comment.votes[userPreviousVoteIndex].voteValue === voteValue) {
-        throw new Meteor.Error("not-authorized");
-      }
-      comment.votes[userPreviousVoteIndex].voteValue = voteValue;
-      newVotes = comment.votes;
-    }
-
-    Comments.update(commentId, {
+    Dataset.update(postId, {
       $set: {
         votes: newVotes,
       },
