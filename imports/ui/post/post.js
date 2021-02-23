@@ -27,7 +27,8 @@ Template.post.events({
     event.preventDefault();
 
     const voteValue = parseInt(event.target.getAttribute("voteValue"));
-    const contentType = this.hasOwnProperty("postId") ? "comment" : "post";
+
+    const contentType = this.hasOwnProperty("post") ? "comment" : "post";
 
     const userPreviousVoteIndex = this.votes.findIndex(
       (user) => user.userId === Meteor.user()._id
