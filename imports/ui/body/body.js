@@ -21,12 +21,12 @@ Template.body.events({
     event.preventDefault();
 
     const currentText = event.target.textarea_content.value;
-    const contentType = event.target.content;
+    const contentType = event.target.getAttribute("content");
 
-    contentRelId = contentType === "comment" ? true : null;
+    contentRelId = contentType === "comment" ? this._id : null;
 
     Meteor.call("content.insert", currentText, contentType, contentRelId);
 
-    event.target.textarea_post.value = "";
+    event.target.textarea_content.value = "";
   },
 });
