@@ -14,9 +14,10 @@ Template.post.helpers({
     return Comments.find({ post: this._id }, { sort: { createdAt: -1 } });
   },
 
-  notUserPost() {
-    return this.owner !== Meteor.user()._id;
+  isUserPost() {
+    return this.owner === Meteor.user()._id;
   },
+
   calculateVotes() {
     return this.votes.reduce((sum, user) => sum + user.voteValue, 0);
   },
@@ -49,5 +50,8 @@ Template.post.events({
     } else {
       Meteor.call("content.vote", contentType, this._id, voteValue);
     }
+  },
+  "change .private-post input"(event) {
+    Meteor.call("post.private", this._id, event.target.checked);
   },
 });

@@ -1,11 +1,16 @@
 <template name="post">
   <li class="post-wrapper">
+    {{#if isUserPost}}
+      <label class="private-post"><input type="checkbox"> Private post</label>
+      <br><br>
+      {{/if}}
     <i>by {{username}}</i>
     <p>{{text}}</p>
     <p><i>{{calculateVotes}} votes</i></p>
 
     {{#if currentUser}}
-      {{#if notUserPost}}
+      {{#if isUserPost}}
+      {{else}}
         <div>
           <button class="vote" voteValue="1">upvote</button>
           <button class="vote" voteValue="-1">downvote</button>

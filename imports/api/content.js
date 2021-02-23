@@ -8,7 +8,9 @@ export const Comments = new Mongo.Collection("comments");
 
 if (Meteor.isServer) {
   Meteor.publish("posts", function postsPublication() {
-    return Posts.find();
+    return Posts.find({
+      $or: [{ private: { $ne: true } }, { owner: this.userId }],
+    });
   });
   Meteor.publish("comments", function commentsPublication() {
     return Comments.find();
@@ -84,6 +86,26 @@ Meteor.methods({
     Dataset.update(contentId, {
       $set: {
         votes: newVotes,
+      },
+    });
+  },
+  "post.private"(postId, isChecked) {
+    check(isChecked, Boolean);
+
+    if (!this.userId) {
+      throw new Meteor.Error("not-authorized");
+    }
+
+    post = Posts.findOne({ _id: postId });
+
+    // error check
+    if (post.owner !== this.userId) {
+      throw new Meteor.Error("not-authorized");
+    }
+
+    Posts.update(postId, {
+      $set: {
+        private: isChecked,
       },
     });
   },
