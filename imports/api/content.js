@@ -57,8 +57,6 @@ Meteor.methods({
 
     Dataset = contentType === "comment" ? Comments : Posts;
 
-    console.log(Dataset);
-
     content = Dataset.findOne({ _id: contentId });
 
     // don't allow votes on own posts
