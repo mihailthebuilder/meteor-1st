@@ -4,7 +4,7 @@ import { check, Match } from "meteor/check";
 import { Mongo } from "meteor/mongo";
 
 export const Posts = new Mongo.Collection("posts");
-export const Commnets = new Mongo.Collection("comments");
+export const Comments = new Mongo.Collection("comments");
 
 if (Meteor.isServer) {
   Meteor.publish("posts", function postsPublication() {
